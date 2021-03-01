@@ -38,8 +38,10 @@ async function endtoend(): Promise<void> {
       two: { int_member: 1, bool_member: false, string_member: "again" },
     }
 
-    ipldSchema.validate(objectMap.one, "ObjectType")
-    ipldSchema.validate(objectMap, "MapType")
+    const val1 = ipldSchema.validate(objectMap.one, "ObjectType")
+    if (!val1) console.log(`error validating ObjectType!`)
+    const val2 = ipldSchema.validate(objectMap, "MapType")
+    if (!val2) console.log(`error validating MapType!`)
 
     const { cid } = await client.add(JSON.stringify(objectMap), { pin: true })
 
@@ -51,7 +53,17 @@ async function endtoend(): Promise<void> {
     for await (const data of retrieved) {
       // console.log(`got data`, data.toString())
       for await (const innerdata of (data as any).content) {
+        const rawJson = innerdata.toString()
         console.log(`got innerdata`, innerdata.toString())
+
+        const parsed = JSON.parse(rawJson) as MapType
+
+        const val1 = ipldSchema.validate(parsed.one, "ObjectType")
+        if (!val1) console.log(`error validating ObjectType!`)
+        const val2 = ipldSchema.validate(parsed, "MapType")
+        if (!val2) console.log(`error validating MapType!`)
+
+        console.log(`parsed data is `, parsed)
       }
     }
 
