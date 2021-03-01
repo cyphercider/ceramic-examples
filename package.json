@@ -1,0 +1,21 @@
+{
+  "name": "ipld-testbed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "schema test": "node ./dist/schema.js",
+    "http test": "node ./dist/http.js",
+    "end-to-end": "node ./dist/end-to-end.js",
+    "watch": "tsc -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^4.2.2"
+  },
+  "dependencies": {
+    "ipfs-http-client": "^49.0.2",
+    "ipld-schema": "^0.4.0"
+  }
+}
