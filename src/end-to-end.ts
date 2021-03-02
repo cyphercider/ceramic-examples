@@ -43,7 +43,25 @@ async function endtoend(): Promise<void> {
     const val2 = ipldSchema.validate(objectMap, "MapType")
     if (!val2) console.log(`error validating MapType!`)
 
+    console.log(`adding content`)
     const { cid } = await client.add(JSON.stringify(objectMap), { pin: true })
+
+    // try to publish to ipns
+    const published = await client.name.publish(cid)
+    console.log(`https://gateway.ipfs.io/ipns/${published.name}`)
+
+    const write2 = await client.add(
+      JSON.stringify({
+        ...objectMap,
+        three: { int_member: 99, bool_member: true, string_member: "mutated" },
+      }),
+      { pin: true }
+    )
+
+    const published2 = await client.name.publish(write2.cid, {
+      key: published.name,
+    })
+    console.log(`https://gateway.ipfs.io/ipns/${published.name}`)
 
     const retrieved = await client.get(cid)
 
@@ -72,7 +90,7 @@ async function endtoend(): Promise<void> {
     // const retrieved = await client.get(cid)
     // console.log(`retrieved data`, retrieved)
   } catch (err) {
-    console.error(`Error in end to end test`)
+    console.error(`Error in end to end test`, err)
   }
 }
 
