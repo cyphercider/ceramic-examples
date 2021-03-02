@@ -46,8 +46,21 @@ async function endtoend(): Promise<void> {
     console.log(`adding content`)
     const { cid } = await client.add(JSON.stringify(objectMap), { pin: true })
 
-    // try to publish to ipns
-    const published = await client.name.publish(cid)
+    /**
+     * Publish to IPNS
+     */
+
+    // generate IPNS key
+    try {
+      const key = await client.key.gen("SecondKey")
+    } catch (err) {
+      console.error(err)
+      console.log(
+        `Error generating key, key probably already exists.  Proceeding.`
+      )
+    }
+
+    const published = await client.name.publish(cid, { key: "SecondKey" })
     console.log(`https://gateway.ipfs.io/ipns/${published.name}`)
 
     const write2 = await client.add(
@@ -59,7 +72,7 @@ async function endtoend(): Promise<void> {
     )
 
     const published2 = await client.name.publish(write2.cid, {
-      key: published.name,
+      key: "SecondKey",
     })
     console.log(`https://gateway.ipfs.io/ipns/${published.name}`)
 
