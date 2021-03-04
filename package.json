@@ -6,7 +6,8 @@
   "scripts": {
     "schema test": "node ./dist/schema.js",
     "http test": "node ./dist/http.js",
-    "end-to-end": "node ./dist/end-to-end.js",
+    "end-to-end-ipfs": "node ./dist/end-to-end.js",
+    "ceramic-test": "node ./dist/ceramic-test.js",
     "watch": "tsc -w"
   },
   "author": "",
@@ -15,7 +16,15 @@
     "typescript": "^4.2.2"
   },
   "dependencies": {
+    "@ceramicnetwork/core": "^0.19.7",
+    "@ceramicnetwork/http-client": "^0.9.6",
+    "@stablelib/random": "^1.0.0",
+    "3id-did-provider": "^0.5.1",
+    "dag-jose": "^0.3.0",
     "ipfs-http-client": "^49.0.2",
-    "ipld-schema": "^0.4.0"
+    "ipld-schema": "^0.4.0",
+    "key-did-provider-ed25519": "^1.0.0",
+    "multicodec": "^0.5.6",
+    "multiformats": "^4.5.3"
   }
 }
