@@ -6,12 +6,21 @@ A collection of proof of concept use of available libraries to accomplish tasks 
 
 `npm i`
 
-## Run examples
+## Run examples - pure ipfs
 
 
 ```sh
 npm run watch
 npm run end-to-end
+```
+
+## Run examples - ceramic
+
+*Note: you must have a local ceramic daemon running on localhost:7007*
+
+```sh
+npm run watch
+npm run ceramic-test
 ```
 
 ## Research on mutable data in IPLD
