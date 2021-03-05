@@ -17,6 +17,7 @@ async function testCeramic() {
   const seed = randomBytes(32)
   const provider = new Ed25519Provider(seed)
   await ceramic.setDIDProvider(provider)
+
   const did = new DID({ provider, resolver: KeyResolver.getResolver() })
   await did.authenticate()
 
@@ -25,14 +26,13 @@ async function testCeramic() {
   const doc = await ceramic.createDocument("tile", {
     content: { foo: "bar" },
     metadata: {
-      schema: "ceramic://kyz123456",
       controllers: [did.id],
       family: "doc family",
     },
   })
 
   const loadedDoc = await ceramic.loadDocument(doc.id)
-  console.log(`loaded the doc `, loadedDoc.metadata)
+  console.log(`loaded the doc `, loadedDoc.content)
 }
 
 testCeramic()
