@@ -7,8 +7,8 @@
     "schema test": "node ./dist/schema.js",
     "http test": "node ./dist/http.js",
     "end-to-end-ipfs": "node ./dist/end-to-end.js",
-    "ceramic-test": "node ./dist/ceramic-test.js",
-    "3id-test": "node ./dist/ceramic-test-3id.js",
+    "ceramic-test-key-provider": "node ./dist/ceramic-test.js",
+    "ceramic-test": "node ./dist/ceramic-test-3id.js",
     "watch": "tsc -w"
   },
   "author": "",
