@@ -1,9 +1,7 @@
+import ThreeIdProvider from "3id-did-provider"
 import CeramicClient from "@ceramicnetwork/http-client"
 import { randomBytes } from "@stablelib/random"
-import { Ed25519Provider } from "key-did-provider-ed25519"
-import KeyResolver from "key-did-resolver"
 import { DID } from "dids"
-import ThreeIdProvider from "3id-did-provider"
 
 const API_URL = "http://localhost:7007"
 
