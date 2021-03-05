@@ -7,8 +7,8 @@ const API_URL = "http://localhost:7007"
 
 /**
  * using guide at https://developers.ceramic.network/build/quick-start/
- * using provider athttps://github.com/ceramicnetwork/key-did-provider-ed25519
- * Using ceramic http clienthttps://github.com/ceramicnetwork/js-ceramic/blob/develop/packages/http-client/src/ceramic-http-client.ts
+ * using provider at https://github.com/ceramicnetwork/key-did-provider-ed25519
+ * Using ceramic http client https://github.com/ceramicnetwork/js-ceramic/blob/develop/packages/http-client/src/ceramic-http-client.ts
  */
 
 async function testCeramic() {
