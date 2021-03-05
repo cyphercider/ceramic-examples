@@ -8,6 +8,7 @@
     "http test": "node ./dist/http.js",
     "end-to-end-ipfs": "node ./dist/end-to-end.js",
     "ceramic-test": "node ./dist/ceramic-test.js",
+    "3id-test": "node ./dist/ceramic-test-3id.js",
     "watch": "tsc -w"
   },
   "author": "",
@@ -18,6 +19,7 @@
   "dependencies": {
     "@ceramicnetwork/core": "^0.19.7",
     "@ceramicnetwork/http-client": "^0.9.6",
+    "@ceramicstudio/idx": "^0.8.0",
     "@stablelib/random": "^1.0.0",
     "3id-did-provider": "^0.5.1",
     "dag-jose": "^0.3.0",
