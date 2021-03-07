@@ -7,7 +7,7 @@ import Schema from "ipld-schema"
 
 // connect to a different API
 const options: ClientOptions = {
-  url: "http://127.0.0.1:5001",
+  url: "http://127.0.0.1:5011",
 }
 
 const client = createClient(options)
