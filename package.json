@@ -6,6 +6,7 @@
   "scripts": {
     "schema test": "node ./dist/schema.js",
     "ipfs-daemon": "node ./dist/ceramic-ipfs-daemon.js",
+    "ceramic-daemon": "ceramic daemon --ipfs-api=\"http://localhost:5011\"",
     "http test": "node ./dist/http.js",
     "end-to-end-ipfs": "node ./dist/end-to-end.js",
     "ceramic-test": "node ./dist/ceramic-test.js",
@@ -29,6 +30,7 @@
     "ipld-schema": "^0.4.0",
     "key-did-provider-ed25519": "^1.0.0",
     "multicodec": "^0.5.6",
-    "multiformats": "^4.5.3"
+    "multiformats": "^4.5.3",
+    "ulid": "^2.3.0"
   }
 }

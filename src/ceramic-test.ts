@@ -1,6 +1,7 @@
-import CeramicClient from "@ceramicnetwork/http-client"
+import CeramicClient, { CeramicClientConfig } from "@ceramicnetwork/http-client"
 import { randomBytes } from "@stablelib/random"
 import { Ed25519Provider } from "key-did-provider-ed25519"
+import { ulid } from "ulid"
 import KeyResolver from "key-did-resolver"
 import { DID } from "dids"
 
@@ -19,17 +20,15 @@ async function testCeramic() {
   const provider = new Ed25519Provider(seed)
   await ceramic.setDIDProvider(provider)
 
-  // const did = new DID({ provider, resolver: KeyResolver.getResolver() })
-  // await did.authenticate()
-
-  // console.log(`provider`, did.id)
   const schema = await ceramic.createDocument("tile", {
     content: {
       $schema: "http://json-schema.org/draft-07/schema#",
       title: "QuickStartSchema",
       type: "object",
       properties: {
+        id: { type: "string" },
         foo: { type: "string" },
+        revision: { type: "number" },
       },
       required: ["foo"],
     },
@@ -40,11 +39,11 @@ async function testCeramic() {
   })
 
   const doc = await ceramic.createDocument("tile", {
-    content: { foo: "bar" },
+    content: { id: ulid(), foo: "bar", revision: 1 },
     metadata: {
       schema: schema.commitId.toUrl(),
       controllers: [ceramic?.did?.id || ""],
-      family: "doc family",
+      family: "test family",
     },
   })
 
@@ -52,6 +51,44 @@ async function testCeramic() {
 
   const loadedDoc = await ceramic.loadDocument(doc.id)
   console.log(`loaded the doc `, loadedDoc.content)
+
+  loadedDoc.change({
+    content: { ...loadedDoc.content, revision: loadedDoc.content.revision + 1 },
+  })
+
+  await listDocsOfFamily("test family", ceramic)
+  // console.log(`doc list`, docList)
+}
+
+async function listDocsOfFamily(
+  docFamily: string,
+  ceramic: CeramicClient
+): Promise<void> {
+  const docList = await ceramic.pin.ls()
+  for await (let docId of docList) {
+    const pinnedDoc = await ceramic.loadDocument(docId)
+    if (pinnedDoc.state.metadata.family === docFamily) {
+      // console.log(`pinned doc`, pinnedDoc.content)
+
+      try {
+        await pinnedDoc.change({
+          content: {
+            ...pinnedDoc.content,
+            revision: pinnedDoc.content.revision + 1,
+          },
+        })
+
+        console.log(`UPDATED docId`, docId)
+        console.log(pinnedDoc.content)
+        console.log(pinnedDoc.id)
+        console.log(pinnedDoc)
+      } catch (err) {
+        // TODO- figure out why I can't update these
+        // console.log(`could not update docId`, docId, err)
+        continue
+      }
+    }
+  }
 }
 
 testCeramic()
