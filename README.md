@@ -23,6 +23,16 @@ npm run watch
 npm run ceramic-test
 ```
 
+### Installing ceramic daemon
+
+https://github.com/ceramicnetwork/js-ceramic/
+https://developers.ceramic.network/build/cli/installation/
+
+```sh
+npm install -g @ceramicnetwork/cli
+ceramic daemon
+```
+
 ## Research on mutable data in IPLD
 
 There is a need to mutate and keep track of mutations to entities in IPLD.
