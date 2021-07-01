@@ -1,0 +1,40 @@
+{
+  "name": "ipld-testbed",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "schema test": "node ./dist/schema.js",
+    "ipfs-daemon": "node ./dist/ceramic-ipfs-daemon.js",
+    "ceramic-daemon-with-other-ipfs": "ceramic daemon --ipfs-api=\"http://localhost:5011\"",
+    "ceramic-daemon": "ceramic daemon",
+    "ceramic-test": "node ./dist/ceramic-test.js",
+    "pouchdb test": "node ./dist/pouchdb.js",
+    "watch": "tsc -w"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/pouchdb": "^6.4.0",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@ceramicnetwork/core": "^1.2.0",
+    "@ceramicnetwork/http-client": "^1.0.7",
+    "@ceramicnetwork/ipfs-daemon": "^1.0.7",
+    "@ceramicnetwork/stream-tile": "^1.0.7",
+    "@ceramicstudio/idx": "^0.12.1",
+    "@stablelib/random": "^1.0.1",
+    "3id-did-provider": "^1.0.2",
+    "dag-jose": "^1.0.0",
+    "dids": "^2.2.0",
+    "ipfs-http-client": "^50.1.2",
+    "ipld-schema": "^1.1.2",
+    "key-did-provider-ed25519": "^1.1.0",
+    "multicodec": "^3.1.0",
+    "multiformats": "^9.1.1",
+    "pouchdb": "^7.2.2",
+    "pouchdb-find": "^7.2.2",
+    "ulid": "^2.3.0"
+  }
+}
