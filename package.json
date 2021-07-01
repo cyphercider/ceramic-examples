@@ -6,15 +6,16 @@
   "scripts": {
     "schema test": "node ./dist/schema.js",
     "ipfs-daemon": "node ./dist/ceramic-ipfs-daemon.js",
-    "ceramic-daemon": "ceramic daemon --ipfs-api=\"http://localhost:5011\"",
-    "http test": "node ./dist/http.js",
-    "end-to-end-ipfs": "node ./dist/end-to-end.js",
+    "ceramic-daemon-with-other-ipfs": "ceramic daemon --ipfs-api=\"http://localhost:5011\"",
+    "ceramic-daemon": "ceramic daemon",
     "ceramic-test": "node ./dist/ceramic-test.js",
+    "pouchdb test": "node ./dist/pouchdb.js",
     "watch": "tsc -w"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/pouchdb": "^6.4.0",
     "typescript": "^4.3.5"
   },
   "dependencies": {
@@ -32,6 +33,8 @@
     "key-did-provider-ed25519": "^1.1.0",
     "multicodec": "^3.1.0",
     "multiformats": "^9.1.1",
+    "pouchdb": "^7.2.2",
+    "pouchdb-find": "^7.2.2",
     "ulid": "^2.3.0"
   }
 }
