@@ -1,6 +1,6 @@
 const Ajv = require("ajv")
 const ajv = new Ajv()
-import { JSONSchema4 } from "json-schema"
+import { JSONSchema7 } from "json-schema"
 import PouchDB from "pouchdb"
 PouchDB.plugin(require("pouchdb-find"))
 import { ulid } from "ulid"
@@ -11,7 +11,7 @@ interface Dog {
   age: number
 }
 
-const DogSchema: JSONSchema4 = {
+const DogSchema: JSONSchema7 = {
   title: "Dog",
   type: "object",
   required: ["_id", "name", "age"],
@@ -42,6 +42,7 @@ async function testPouchdb(): Promise<void> {
 
   const missingAge = {
     _id: "id",
+    name: "maxname",
   }
 
   //   const bo: Dog = {
@@ -57,15 +58,18 @@ async function testPouchdb(): Promise<void> {
   //   db.put(max)
   //   db.put(bo)
 
-  //   const res = await db.find({
-  //     selector: {
-  //       name: "Max",
-  //     },
-  //   })
-  //   const found = res.docs[0]
+  const res = await db.find({
+    selector: {
+      name: "Max",
+    },
+  })
+  const found = res.docs[0]
 
   const validate = ajv.compile(DogSchema)
-  const valid = validate(max)
+  const valid = validate(found)
+  if (!valid) {
+    console.error(validate.errors)
+  }
   console.log(`valid`, valid)
 
   //   const validationResult = validate(missingAge, DogSchema)

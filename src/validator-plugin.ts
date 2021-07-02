@@ -1,0 +1,33 @@
+import { JSONSchema4, JSONSchema6, JSONSchema7 } from "json-schema"
+const Ajv = require("ajv")
+
+export function JSONSchema(schema: JSONSchema4 | JSONSchema6 | JSONSchema7) {
+  const ajv = new Ajv()
+  const validate = ajv.compile(schema)
+  const pouchBulkDocs = PouchDB.prototype.bulkDocs
+
+  return {
+    bulkDocs: (body, options, callback) => {
+      if (typeof options == "function") {
+        callback = options
+        options = {}
+      }
+
+      let docs
+      if (Array.isArray(body)) {
+        docs = body
+      } else {
+        docs = body.docs
+      }
+
+      // All documents must have a .name field.
+      for (var i = 0; i < docs.length; i++) {
+        const valid = validate(docs[i])
+        if (!valid) return callback(new Error(validate.errors))
+      }
+
+      // All documents check out. Pass them to PouchDB.
+      return pouchBulkDocs.call(this, docs, options, callback)
+    },
+  }
+}
