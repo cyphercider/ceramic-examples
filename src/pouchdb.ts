@@ -4,41 +4,18 @@ import { JSONSchema7 } from "json-schema"
 import PouchDB from "pouchdb"
 PouchDB.plugin(require("pouchdb-find"))
 import { ulid } from "ulid"
-
-interface Dog {
-  _id: string
-  name: string
-  age: number
-}
-
-const DogSchema: JSONSchema7 = {
-  title: "Dog",
-  type: "object",
-  required: ["_id", "name", "age"],
-  properties: {
-    _id: {
-      type: "string",
-      description: "primary key",
-    },
-    name: {
-      type: "string",
-      description: "Dog's name",
-    },
-    age: {
-      type: "number",
-      description: "dog's age",
-    },
-  },
-}
+import { jsonSchemaValidator } from "./validator-plugin"
+import { Dog, DogSchema } from "./dog-schema"
+PouchDB.plugin(jsonSchemaValidator(DogSchema) as any)
 
 async function testPouchdb(): Promise<void> {
   const db = new PouchDB("testdb")
 
-  const max: Dog = {
-    _id: ulid(),
-    name: "Max",
-    age: 5,
-  }
+  //   const max: Dog = {
+  //     _id: ulid(),
+  //     name: "Max",
+  //     age: 5,
+  //   }
 
   const missingAge = {
     _id: "id",
@@ -56,7 +33,7 @@ async function testPouchdb(): Promise<void> {
   //   })
 
   //   db.put(max)
-  //   db.put(bo)
+  db.put(missingAge)
 
   const res = await db.find({
     selector: {
