@@ -1,7 +1,8 @@
 import { JSONSchema4, JSONSchema6, JSONSchema7 } from "json-schema"
-const Ajv = require("ajv")
+// import PouchDB from "pouchdb-node"
 import PouchDB from "pouchdb"
 
+const Ajv = require("ajv")
 /**
  * pluchdb plugins
  * https://pouchdb.com/external.html
@@ -9,6 +10,9 @@ import PouchDB from "pouchdb"
  * https://pouchdb.com/api.html#plugins
  * typescript example plugins
  * https://github.com/pouchdb-community/relational-pouch
+ *
+ * global plugins issue: https://github.com/pouchdb/pouchdb/issues/7198
+ *
  */
 
 export function jsonSchemaValidator(
@@ -20,6 +24,8 @@ export function jsonSchemaValidator(
 
   return {
     bulkDocs: (body, options, callback) => {
+      console.log(`options are`, options)
+
       if (typeof options == "function") {
         callback = options
         options = {}
@@ -32,7 +38,6 @@ export function jsonSchemaValidator(
         docs = body.docs
       }
 
-      // All documents must have a .name field.
       for (var i = 0; i < docs.length; i++) {
         const valid = validate(docs[i])
         if (!valid) {

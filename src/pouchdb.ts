@@ -1,53 +1,52 @@
-const Ajv = require("ajv")
-const ajv = new Ajv()
-import { JSONSchema7 } from "json-schema"
+import Ajv from "ajv"
+// import PouchDB from "pouchdb-node"
 import PouchDB from "pouchdb"
+
+import { Bird, BirdSchema, Dog, DogSchema } from "./test-db-schemas"
+import { jsonSchemaValidator2 } from "./validator-plugin-v2"
+
 PouchDB.plugin(require("pouchdb-find"))
-import { ulid } from "ulid"
-import { jsonSchemaValidator } from "./validator-plugin"
-import { Dog, DogSchema } from "./dog-schema"
-PouchDB.plugin(jsonSchemaValidator(DogSchema) as any)
+
+PouchDB.plugin(jsonSchemaValidator2())
+
+const ajv = new Ajv()
+const dogValidator = ajv.compile(DogSchema)
+const birdValidator = ajv.compile(BirdSchema)
+
+const dogDb = new PouchDB("dogs")
+const birdDb = new PouchDB("birds")
 
 async function testPouchdb(): Promise<void> {
-  const db = new PouchDB("testdb")
-
-  //   const max: Dog = {
-  //     _id: ulid(),
-  //     name: "Max",
-  //     age: 5,
-  //   }
-
-  const missingAge = {
+  const dog: Dog = {
     _id: "id",
     name: "maxname",
+    age: 10,
   }
 
-  //   const bo: Dog = {
-  //     _id: ulid(),
-  //     name: "Bo",
-  //     age: 9,
-  //   }
+  console.log(`writing dog`)
+  await dogDb.put(dog, { schemaValidator: dogValidator })
 
-  //   await db.createIndex({
-  //     index: { fields: ["name"] },
+  const bird: Bird = {
+    _id: "id",
+    name: "maxname",
+    wingspan: 98,
+  }
+
+  await birdDb.put(bird, { schemaValidator: birdValidator })
+
+  //   const res = await db.find({
+  //     selector: {
+  //       name: "Max",
+  //     },
   //   })
+  //   const found = res.docs[0]
 
-  //   db.put(max)
-  db.put(missingAge)
-
-  const res = await db.find({
-    selector: {
-      name: "Max",
-    },
-  })
-  const found = res.docs[0]
-
-  const validate = ajv.compile(DogSchema)
-  const valid = validate(found)
-  if (!valid) {
-    console.error(validate.errors)
-  }
-  console.log(`valid`, valid)
+  //   const validate = ajv.compile(DogSchema)
+  //   const valid = validate(found)
+  //   if (!valid) {
+  //     console.error(validate.errors)
+  //   }
+  //   console.log(`valid`, valid)
 
   //   const validationResult = validate(missingAge, DogSchema)
   //   console.log(`validation result is `, validationResult)
