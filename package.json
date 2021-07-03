@@ -9,7 +9,7 @@
     "ceramic-daemon-with-other-ipfs": "ceramic daemon --ipfs-api=\"http://localhost:5011\"",
     "ceramic-daemon": "ceramic daemon",
     "ceramic-test": "node ./dist/ceramic-test.js",
-    "pouchdb test": "node ./dist/pouchdb.js",
+    "pouchdb test": "node ./dist/pouchdb-test.js",
     "watch": "tsc -w"
   },
   "author": "",
@@ -27,6 +27,7 @@
     "@ceramicnetwork/stream-tile": "^1.0.7",
     "@ceramicstudio/idx": "^0.12.1",
     "@stablelib/random": "^1.0.1",
+    "@worldgraph/pouchdb-jsonschema": "^0.1.0",
     "3id-did-provider": "^1.0.2",
     "ajv": "^8.6.0",
     "dag-jose": "^1.0.0",

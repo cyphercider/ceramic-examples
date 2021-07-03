@@ -14,11 +14,13 @@ const Ajv = require("ajv")
  *
  */
 
+const pouchBulkDocs = PouchDB.prototype.bulkDocs
 export function jsonSchemaValidator2() {
-  const pouchBulkDocs = PouchDB.prototype.bulkDocs
+  console.log(`IN VALIDATOR`)
 
   return {
     bulkDocs: (body, options, callback) => {
+      console.log(`IN BULK DOCS`)
       if (typeof options == "function") {
         callback = options
         options = {}
@@ -32,6 +34,7 @@ export function jsonSchemaValidator2() {
       }
 
       if (options.schemaValidator) {
+        console.log(`setting validator`)
         const validate = options.schemaValidator
         if (typeof validate !== "function") {
           return callback(
@@ -57,8 +60,11 @@ export function jsonSchemaValidator2() {
         )
       }
 
+      const that = this
+
       // All documents check out. Pass them to PouchDB.
-      return pouchBulkDocs.call(this, docs, options, callback)
+      console.log(`calling final`)
+      return pouchBulkDocs.call(that, docs, options, callback)
     },
   }
 }

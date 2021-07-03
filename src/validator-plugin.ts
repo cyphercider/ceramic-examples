@@ -18,6 +18,7 @@ const Ajv = require("ajv")
 export function jsonSchemaValidator(
   schema: JSONSchema4 | JSONSchema6 | JSONSchema7
 ) {
+  console.log(`IN VALIDATOR`)
   const ajv = new Ajv()
   const validate = ajv.compile(schema)
   const pouchBulkDocs = PouchDB.prototype.bulkDocs
@@ -48,6 +49,7 @@ export function jsonSchemaValidator(
       //@ts-ignore
       const that = this
 
+      console.log(`finishing`)
       // All documents check out. Pass them to PouchDB.
       return pouchBulkDocs.call(that, docs, options, callback)
     },

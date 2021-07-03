@@ -1,13 +1,18 @@
 import Ajv from "ajv"
 // import PouchDB from "pouchdb-node"
 import PouchDB from "pouchdb"
+import pouchDebug from "pouchdb-debug"
 
 import { Bird, BirdSchema, Dog, DogSchema } from "./test-db-schemas"
-import { jsonSchemaValidator2 } from "./validator-plugin-v2"
+import { ulid } from "ulid"
+import { theSchemaValidator } from "./sillyvalidator"
 
 PouchDB.plugin(require("pouchdb-find"))
 
-PouchDB.plugin(jsonSchemaValidator2())
+PouchDB.plugin(pouchDebug)
+// PouchDB.plugin(jsonSchemaValidator2())
+console.log(`init`)
+PouchDB.plugin(theSchemaValidator as any)
 
 const ajv = new Ajv()
 const dogValidator = ajv.compile(DogSchema)
@@ -18,16 +23,22 @@ const birdDb = new PouchDB("birds")
 
 async function testPouchdb(): Promise<void> {
   const dog: Dog = {
-    _id: "id",
+    _id: ulid(),
     name: "maxname",
     age: 10,
   }
 
+  delete dog.name
   console.log(`writing dog`)
-  await dogDb.put(dog, { schemaValidator: dogValidator })
+  try {
+    await dogDb.put(dog, { schemaValidator: dogValidator })
+  } catch (err) {
+    console.log(`got error putting dog`)
+    console.log(err)
+  }
 
   const bird: Bird = {
-    _id: "id",
+    _id: ulid(),
     name: "maxname",
     wingspan: 98,
   }
